@@ -37,13 +37,47 @@ function ninja_build()
     ./main
 }
 
+# cmake build, we can use cmake generate makefile, then used make to build target
+# https://cmake.org/cmake/help/v3.22/
+function cmake_build()
+{
+    echo "Fisrt, use make"
+
+    mkdir -p build
+    cd build
+
+    # Use cmake generate makefile, specify CMakeLists.txt dir
+    cmake ../cmake
+
+    # Call that build system to actually compile/link the project, The same as make
+    cmake --build .
+
+    ./main
+
+    echo "Then, use ninja"
+
+    cd ..
+    rm -rf build
+    mkdir -p build
+    cd build
+
+    # Use cmake generate build.ninja, specify CMakeLists.txt dir
+    cmake -G Ninja ../cmake
+
+    # Call that build system to actually compile/link the project, The same as ninja
+    cmake --build .
+
+    ./main
+}
+
 cmd_help()
 {
     echo "Basic build:"
     echo "$0 h         ---> command help"
     echo "$0 gcc       ---> use gcc bare build"
     echo "$0 make      ---> use make build"
-    echo "$0 make      ---> use ninja build"
+    echo "$0 ninja     ---> use ninja build"
+    echo "$0 cmake     ---> use cmake build"
     echo "$0 c         ---> clean"
 }
 
@@ -55,12 +89,15 @@ elif [[ $1  = "make" ]]; then
     make_build
 elif [[ $1  = "ninja" ]]; then
     ninja_build
+elif [[ $1  = "cmake" ]]; then
+    cmake_build
 elif [[ $1  = "c" ]]; then
     rm -rf main.o sub.o
     rm -rf main main_b main_g
     make clean -f make/makefile
     ninja -f ninja/build.ninja -t clean
     rm -rf .ninja_deps .ninja_log
+    rm -rf build
 else
 	echo "wrong args."
 	cmd_help
