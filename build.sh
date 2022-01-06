@@ -21,6 +21,27 @@ function gcc_bare_build()
     ./main_g
 }
 
+# Clang bare build, we can use clang build target
+# https://clang.llvm.org/
+function clang_bare_build()
+{
+    # Step1 : compile .c to .o , -I specify header search dir
+    clang -c main.c -Isub
+    clang -c sub/sub.c -Isub
+
+    # Step2 : compile .o to binary
+    clang main.o sub.o -o main
+    ./main
+
+    # Integrated into one command
+    clang main.c sub/sub.c -Isub -o main_b
+    ./main_b
+
+    # -g is debug option, with this, you can use gdb to debug the binary(start, b, info reg etc)
+    clang -g main.c sub/sub.c -Isub -o main_g
+    ./main_g
+}
+
 # make build, we can use make and define makefile to build target
 # http://8.210.111.180/share/doc/compile/make.pdf
 function make_build()
@@ -90,6 +111,7 @@ cmd_help()
     echo "Basic build:"
     echo "$0 h         ---> command help"
     echo "$0 gcc       ---> use gcc bare build"
+    echo "$0 clang     ---> use gcc bare build"
     echo "$0 make      ---> use make build"
     echo "$0 ninja     ---> use ninja build"
     echo "$0 cmake     ---> use cmake build"
@@ -101,6 +123,8 @@ if [[ $1  = "h" ]]; then
     cmd_help
 elif [[ $1  = "gcc" ]]; then
     gcc_bare_build
+elif [[ $1  = "clang" ]]; then
+    clang_bare_build
 elif [[ $1  = "make" ]]; then
     make_build
 elif [[ $1  = "ninja" ]]; then

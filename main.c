@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <sub.h>
 
-void main(void)
+int main(void)
 {
     int a = 4;
     int b = 5;
