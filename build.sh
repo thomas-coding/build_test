@@ -1,5 +1,12 @@
 #!/bin/bash
 
+
+#  level 1(compile)       level 2(build)             level 3(generator)
+#      gcc                  make                        cmake
+#      clang                ninja                       gn(only support ninja)
+#
+
+
 # GCC bare build, we can use gcc build target
 # http://8.210.111.180/share/doc/compile/gcc.pdf
 function gcc_bare_build()
