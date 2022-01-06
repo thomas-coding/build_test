@@ -71,7 +71,7 @@ function cmake_build()
 }
 
 # gn build, we can use cmake generate build.ninja, then used ninja to build target
-# https://ninja-build.org/manual.html
+# https://gn.googlesource.com/gn/
 function gn_build()
 {
     cd gn
