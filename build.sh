@@ -37,7 +37,7 @@ function ninja_build()
     ./main
 }
 
-# cmake build, we can use cmake generate makefile, then used make to build target
+# cmake build, we can use cmake generate makefile or build.ninja, then used make or ninja to build target
 # https://cmake.org/cmake/help/v3.22/
 function cmake_build()
 {
@@ -70,6 +70,21 @@ function cmake_build()
     ./main
 }
 
+# gn build, we can use cmake generate build.ninja, then used ninja to build target
+# https://ninja-build.org/manual.html
+function gn_build()
+{
+    cd gn
+
+    # Generate ninja file to out/build
+    /root/workspace/software/gn/out/gn gen out/build
+
+    # Used ninja to build target
+    ninja -C out/build/
+
+    ./out/build/main
+}
+
 cmd_help()
 {
     echo "Basic build:"
@@ -78,6 +93,7 @@ cmd_help()
     echo "$0 make      ---> use make build"
     echo "$0 ninja     ---> use ninja build"
     echo "$0 cmake     ---> use cmake build"
+    echo "$0 gn        ---> use gn build"
     echo "$0 c         ---> clean"
 }
 
@@ -91,6 +107,8 @@ elif [[ $1  = "ninja" ]]; then
     ninja_build
 elif [[ $1  = "cmake" ]]; then
     cmake_build
+elif [[ $1  = "gn" ]]; then
+    gn_build
 elif [[ $1  = "c" ]]; then
     rm -rf main.o sub.o
     rm -rf main main_b main_g
@@ -98,6 +116,7 @@ elif [[ $1  = "c" ]]; then
     ninja -f ninja/build.ninja -t clean
     rm -rf .ninja_deps .ninja_log
     rm -rf build
+    rm -rf gn/out
 else
 	echo "wrong args."
 	cmd_help
