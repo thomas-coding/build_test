@@ -1,0 +1,15 @@
+# ------------------------
+# Generic Ninja
+# ------------------------
+
+rule cc
+    command = gcc -Isub -c $in -o $out
+
+rule ld
+    command = gcc $in -o $out
+
+build sub.o: cc sub/sub.c
+build main.o: cc main.c
+
+build main: ld sub.o main.o
+
