@@ -1,0 +1,12 @@
+import pdb; 
+import os
+#pdb.set_trace()
+
+
+
+env = Environment()
+
+
+src_files = Split("""../main.c 
+                    ../sub/sub.c""")
+target = env.Program(target='hello', CFLAGS='-DHELLO', source=src_files, CPPPATH = ['../sub'])

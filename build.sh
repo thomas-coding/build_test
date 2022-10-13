@@ -113,6 +113,12 @@ function gn_build()
     ./out/build/main
 }
 
+function scons_build()
+{
+    cd scons
+    scons
+}
+
 cmd_help()
 {
     echo "Basic build:"
@@ -140,14 +146,17 @@ elif [[ $1  = "cmake" ]]; then
     cmake_build
 elif [[ $1  = "gn" ]]; then
     gn_build
+elif [[ $1  = "scons" ]]; then
+    scons_build
 elif [[ $1  = "c" ]]; then
-    rm -rf main.o sub.o
+    rm -rf main.o sub.o sub/sub.o
     rm -rf main main_b main_g
     make clean -f make/makefile
     ninja -f ninja/build.ninja -t clean
     rm -rf .ninja_deps .ninja_log
     rm -rf build
     rm -rf gn/out
+    rm -rf scons/hello scons/.sconsign.dblite
 else
 	echo "wrong args."
 	cmd_help
